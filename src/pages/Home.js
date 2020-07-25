@@ -16,7 +16,7 @@ const Home = ({ history }) => {
 			uid: user.uid,
 		};
 	} else {
-		// history.push("/top");
+		history.push("/top");
 	}
 
 	return (

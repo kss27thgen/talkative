@@ -41,6 +41,7 @@ const MessageForm = ({ currentUser }) => {
 			name: currentUser.name,
 			text: form.text,
 			id,
+			userId: currentUser.uid,
 			timestamp: Date.now(),
 			photoUrl: currentUser.photoUrl,
 		};

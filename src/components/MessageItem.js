@@ -4,9 +4,10 @@ import moment from "moment";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { db } from "../firebase";
+import { Link } from "react-router-dom";
 
 const MessageItem = ({ message }) => {
-	const { text, timestamp, name, photoUrl, file } = message;
+	const { text, timestamp, name, photoUrl, file, id } = message;
 
 	const handleDelete = () => {
 		db.collection("messages").doc(message.id).delete();
@@ -20,7 +21,9 @@ const MessageItem = ({ message }) => {
 			</div>
 			<div className="message--right">
 				<header>
-					<h4>{name}</h4>
+					<h4>
+						<Link to={"/users/" + id}>{name}</Link>
+					</h4>
 					<small>{moment(timestamp).fromNow()}</small>
 					<FontAwesomeIcon
 						icon={faTrashAlt}

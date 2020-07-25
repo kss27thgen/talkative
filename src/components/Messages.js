@@ -10,6 +10,7 @@ const Messages = () => {
 			.onSnapshot((snapshot) => {
 				snapshot.docChanges().forEach(function (change) {
 					if (change.type === "added") {
+						console.log(change.doc.data());
 						setMessages((oldArray) => [
 							change.doc.data(),
 							...oldArray,

@@ -2,7 +2,23 @@ import React, { useState } from "react";
 import firebase from "../firebase";
 
 const Top = ({ history }) => {
-	const [signedIn, setSignedIn] = useState(false);
+	const [signedUp, setSignedUp] = useState(true);
+	const [errors, setErrors] = useState([]);
+	const [form, setForm] = useState({
+		nickname: "",
+		email: "",
+		password: "",
+		passwordConf: "",
+	});
+
+	const { nickname, email, password, passwordConf } = form;
+
+	const handleChange = (e) => {
+		setForm({
+			...form,
+			[e.target.name]: e.target.value,
+		});
+	};
 
 	const handleGoogleAuth = () => {
 		var provider = new firebase.auth.GoogleAuthProvider();
@@ -26,38 +42,89 @@ const Top = ({ history }) => {
 				// ...
 			});
 	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		if (signedUp) {
+			try {
+				const res = await firebase
+					.auth()
+					.signInWithEmailAndPassword(email, password);
+				history.push("/");
+			} catch (err) {
+				return setErrors([...errors, err.message]);
+			}
+		} else {
+			if (password !== passwordConf) {
+				return setErrors([...errors, "password did not match"]);
+			}
+			try {
+				const res = await firebase
+					.auth()
+					.createUserWithEmailAndPassword(email, password);
+				await res.user.updateProfile({
+					displayName: nickname,
+					photoURL: `https://i.pravatar.cc/300?u=${email}`,
+				});
+				history.push("/");
+			} catch (err) {
+				return setErrors([...errors, err.message]);
+			}
+		}
+	};
+
 	return (
 		<main className="top">
-			<form>
+			<form onSubmit={handleSubmit}>
 				<button type="button" onClick={handleGoogleAuth}>
 					Sign In with Google
 				</button>
 				<em>OR</em>
-				{!signedIn && (
+				{errors.length > 0 &&
+					errors.map((error, i) => (
+						<div key={i} className="error">
+							{error}
+						</div>
+					))}
+				{!signedUp && (
 					<input
 						type="text"
 						name="nickname"
+						value={nickname}
 						autoComplete="off"
 						placeholder="nickname"
+						onChange={handleChange}
 					/>
 				)}
-				<input type="email" name="email" placeholder="email" />
-				{!signedIn && (
-					<input
-						type="password"
-						name="passwordConf"
-						placeholder="password"
-					/>
-				)}
+				<input
+					type="email"
+					name="email"
+					placeholder="email"
+					value={email}
+					onChange={handleChange}
+				/>
 
 				<input
 					type="password"
 					name="password"
-					placeholder="confirm password"
+					placeholder="password"
+					value={password}
+					onChange={handleChange}
 				/>
-				<input type="submit" value={signedIn ? "Sign In" : "Sign Up"} />
-				<p onClick={() => setSignedIn(!signedIn)}>
-					{signedIn ? "Make a account?" : "Already have an account?"}
+
+				{!signedUp && (
+					<input
+						type="password"
+						name="passwordConf"
+						value={passwordConf}
+						onChange={handleChange}
+						placeholder="confirm password"
+					/>
+				)}
+
+				<input type="submit" value={signedUp ? "Sign In" : "Sign Up"} />
+				<p onClick={() => setSignedUp(!signedUp)}>
+					{signedUp ? "Make a account?" : "Already have an account?"}
 				</p>
 			</form>
 		</main>
