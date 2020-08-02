@@ -3,17 +3,19 @@ import { db } from "../firebase";
 import MessageItem from "./MessageItem";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-const Messages = () => {
+const Messages = ({ match }) => {
 	useEffect(() => {
 		db.collection("messages")
 			.orderBy("timestamp", "asc")
 			.onSnapshot((snapshot) => {
 				snapshot.docChanges().forEach(function (change) {
 					if (change.type === "added") {
-						setMessages((oldArray) => [
-							change.doc.data(),
-							...oldArray,
-						]);
+						if (change.doc.data().userId == match.params.id) {
+							setMessages((oldArray) => [
+								change.doc.data(),
+								...oldArray,
+							]);
+						}
 					}
 					if (change.type === "modified") {
 						console.log("Modified: ", change.doc.data());

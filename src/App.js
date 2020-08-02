@@ -3,6 +3,7 @@ import "./App.sass";
 import Home from "./pages/Home";
 import Top from "./pages/Top";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import User from "./pages/User";
 
 const App = () => {
 	return (
@@ -11,7 +12,7 @@ const App = () => {
 				<Switch>
 					<Route path="/top" component={Top} />
 					<Route exact path="/" component={Home} />
-					{/* <Route exact path="/users/:id" component={User} /> */}
+					<Route exact path="/users/:id" component={User} />
 				</Switch>
 			</Router>
 		</>
