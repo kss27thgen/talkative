@@ -104,7 +104,7 @@ main.top
     height: 100vh
     justify-content: center
     align-items: center
-    background: url('./images/nami.png')
+    background: url('./images/lilypads.png')
     form
         background: linear-gradient(to right bottom, gray, $mainGold)
         padding: 5rem
@@ -113,6 +113,10 @@ main.top
         align-items: center
         border-radius: 3px
         box-shadow: 1px 2px 3px 1px $mainGold
+    .error
+        font-size: 1.6rem
+        color: #fff
+        margin-bottom: 1rem
     input[type=text], input[type=email], input[type=password], button
         margin-bottom: 2rem
         +inputStyle
@@ -182,6 +186,8 @@ main.top
 .messages
     padding-top: 2rem
     margin: 9rem 0
+    +w1200
+        padding: 2rem 10rem
 
 .message
     padding: 1rem
@@ -202,6 +208,7 @@ main.top
             width: 5rem
             border-radius: 50%
     &--right
+        width: 100%
         padding: 0 1rem
         header
             display: flex
@@ -211,13 +218,47 @@ main.top
         small
             padding: 0.6rem
             font-size: 1.3rem
-        .trashIcon
+            margin-right: auto
+
+        svg
             font-size: 1.6rem
             cursor: pointer
+            &:hover
+                background: #eee
+                border-radius: 50%
+
+        .pullDown
+            position: relative
+            .angleIcon
+                font-size: 2.5rem
+                color: #bbb
+            section
+                position: absolute
+                padding: 1rem
+                right: 0
+                border: 1px solid lightgray
+                font-size: 1.6rem
+                display: flex
+                flex-direction: column
+                li
+                    cursor: pointer
         p
             font-size: 1.6rem
         img
             width: 20rem
+    .icons
+        margin-top: 0.5rem
+        font-size: 1.4rem
+        color: #888
+        display: flex
+        width: 70%
+        justify-content: space-between
+        li
+            cursor: pointer
+            padding: .8rem
+            &:hover
+                background: #eee
+                border-radius: 50%
 
 /* Animation (Add After) */
 .fade-enter

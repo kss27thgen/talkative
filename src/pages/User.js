@@ -1,10 +1,10 @@
 import React from "react";
-import Messages from "../components/Messages";
 import MessageForm from "../components/MessageForm";
+import UserMessages from "../components/UserMessages";
 import Header from "../components/Header";
 import firebase from "firebase";
 
-const Home = ({ history }) => {
+const Home = ({ history, match }) => {
 	var user = firebase.auth().currentUser;
 	var currentUser;
 
@@ -23,7 +23,7 @@ const Home = ({ history }) => {
 		<>
 			<Header />
 			<main className="main">
-				<Messages />
+				<UserMessages match={match} />
 				<MessageForm currentUser={currentUser} />
 			</main>
 		</>
